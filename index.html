@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            width: 100vw;
+            height: 100%;
+            overflow-x: hidden;
+            padding-top: 30px;
+        }
+
+        h1, h2{text-align: center;}
+
+        #contMoves{
+            width: calc(100% - 30px);
+            display: flex;
+            justify-content: space-between;
+            margin-inline: auto;
+        }
+        #contMoves div{
+            width: 50%;
+            text-align: center;
+        }
+
+        h2{
+            width: 100%;
+            height: fit-content;
+        }
+
+        fieldset{
+            width: calc(100% - 60px);
+            margin-inline: auto;
+            padding: 15px;
+        }
+
+        form{
+            width: 100%;
+            height: 100%;
+        }
+
+        #PlayerChoiceCont{
+            width: calc(100% - 30px);
+            display: flex;
+            justify-content: space-between;
+            margin-inline: auto;
+        }
+
+        .choices{
+            width: min((100% - 45px) / 3, 100% - 45px);
+            border: 2px solid #333;
+            border-radius: 5px;
+            box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all .2s ease-in-out;
+        }
+        .choices svg{
+            transition: all .2s ease-in-out;
+        }
+        .choices[data-checked=true] svg{
+            transform: scale(1.2);
+            transition: all .2s ease-in-out;
+        }
+        .choices svg, .choices label{
+            margin-inline: auto;
+            text-align: center;
+        }
+
+        .contSvg{
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            height: fit-content;
+            margin-bottom: 15px;
+            margin-top: 15px;
+        }
+
+        .contRadio{
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            height: fit-content;
+            margin-bottom: 15px;
+        }
+
+        input[type="radio"]{
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        label{
+            text-align: center;
+            cursor: pointer;
+            width: 100%;
+            margin-inline: auto;
+            transition: all .2s ease-in-out;
+        }
+        input[type="radio"]:checked + label{
+            font-weight: bold;
+            transition: all .2s ease-in-out;
+        }
+
+        #btnSub{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        #btnValidate{
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        div.choices[data-checked=true]{
+            box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
+        }
+
+        #msgI{
+            text-align: center;
+            color: red;
+        }
+
+        #playerMoveDisplay{
+            border-right: 2px solid #555;
+        }
+
+        .movesPC{
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+
+        @media screen and (max-width: 600px) {
+            fieldset{
+                margin-bottom: 15px;
+            }
+            #contMoves{
+                width: calc(100% - 30px);
+                display: inline-block;
+                transform: translateX(15px);
+            }
+            #contMoves div{
+                width: 100%;
+                text-align: center;
+                border: none;
+            }
+            #contMoves div:first-child{
+                border-bottom: 2px dotted #555;
+            }
+
+            #PlayerChoiceCont{
+                width: calc(100% - 30px);
+                display: inline-block;
+            }
+
+            .choices{
+                width: calc(100% - 45px);
+                margin-inline: auto;
+                margin-bottom: 15px;
+            }
+
+            #output{
+                margin-top: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Rock Paper Scissors - Simulator</h1>
+
+    <br>
+    <hr>
+    <br>
+
+    <div id="contMoves">
+        <div id="playerMoveDisplay" class="movesPC">
+            <h3>You've played</h3>
+            <h4>
+                <pre id="move1"></pre>
+            </h4>
+        </div>
+        <div id="computerMoveDisplay" class="movesPC">
+            <h3>The computer've played</h3>
+            <h4>
+                <pre id="move2"></pre>
+            </h4>
+        </div>
+    </div>
+
+    <br>
+
+    <h2>
+        <p id="output"></p>
+    </h2>
+
+    <br><br>
+
+    <fieldset>
+        <form>
+            <div id="PlayerChoiceCont">
+                <div id="Choice1" class="choices" data-checked="false" data-play="rock" onclick="selectedChoice(this);">
+                    <div class="contSvg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box" viewBox="0 0 16 16">
+                            <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
+                        </svg>
+                    </div>
+
+                    <div class="contRadio">
+                        <input type="radio" name="PlayerChoice" id="ChoiceRock" value="Rock" data-play="rock">
+                        <label for="ChoiceRock">Rock</label>
+                    </div>
+                </div>
+    
+                <div id="Choice2" class="choices" data-checked="false" data-play="paper" onclick="selectedChoice(this);">
+                    <div class="contSvg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-file-earmark-text" viewBox="0 0 16 16">
+                            <path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
+                            <path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+                        </svg>
+                    </div>
+
+                    <div class="contRadio">
+                        <input type="radio" name="PlayerChoice" id="ChoicePaper" value="Paper" data-play="paper">
+                        <label for="ChoicePaper">Paper</label>
+                    </div>
+                </div>
+    
+                <div id="Choice3" class="choices" data-checked="false" data-play="scissors" onclick="selectedChoice(this);">
+                    <div class="contSvg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-scissors" viewBox="0 0 16 16">
+                            <path d="M3.5 3.5c-.614-.884-.074-1.962.858-2.5L8 7.226 11.642 1c.932.538 1.472 1.616.858 2.5L8.81 8.61l1.556 2.661a2.5 2.5 0 1 1-.794.637L8 9.73l-1.572 2.177a2.5 2.5 0 1 1-.794-.637L7.19 8.61 3.5 3.5zm2.5 10a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0zm7 0a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0z"/>
+                        </svg>
+                    </div>
+
+                    <div class="contRadio">
+                        <input type="radio" name="PlayerChoice" id="ChoiceScissors" value="Scissors" data-play="scissors">
+                        <label for="ChoiceScissors">Scissors</label>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+
+            <p id="msgI"></p>
+
+            <br>
+
+            <div id="btnSub">
+                <button type="button" id="btnValidate">FIGHT !</button>
+            </div>
+        </form>
+    </fieldset>
+
+    <script>
+        var btn = document.getElementById('btnValidate');
+
+        function selectedChoice(e){
+            const allChoice = document.querySelectorAll('div.choices');
+            const inputRadio = document.querySelectorAll('input[type=radio]');
+
+            allChoice.forEach(btn => btn.setAttribute('data-checked', 'false'));
+            inputRadio.forEach(btn => btn.removeAttribute('checked'));
+            e.setAttribute('data-checked', 'true');
+            
+            var divPlay = e.getAttribute('data-play'),
+                inputCheck = document.querySelectorAll('input[data-play='+divPlay+']');
+
+            for(var i = 0; i < inputRadio.length; i++){
+                if(inputRadio[i].getAttribute('data-play') == divPlay){
+                    inputRadio[i].checked = true;
+                }
+            }
+        }
+
+        function randomNumber(min, max){
+            return Math.floor(Math.random() * (max - min + 1) + min);
+        }
+
+        btn.onclick = function(){
+            var value = false,
+                input = document.querySelectorAll('input[type=radio'),
+                msgErreur = document.getElementById('msgI');
+            for(var i = 0; i < input.length; i++){
+                if(input[i].checked){
+                    value = true;
+                }
+            }
+
+            if(value == true){
+                msgErreur.innerText = '';
+
+                const moves = ['Paper','Rock','Scissors'];
+                var playerChoice = document.querySelector('input[name="PlayerChoice"]:checked').value,
+                    computerChoice = moves[randomNumber(0, 2)],
+                    victoryMsg = 'You won!',
+
+                    outputMsg = document.getElementById('output'),
+                    move1 = document.getElementById('move1'),
+                    move2 = document.getElementById('move2');
+                
+                console.log('You choose: '+playerChoice);
+                console.log('The computer choose: '+computerChoice);
+                console.log('------------------------');
+
+                if(computerChoice == playerChoice){
+                    victoryMsg = "It's a draw.";
+                }
+
+                if((computerChoice == 'Scissors' && playerChoice == 'Paper') || (computerChoice == 'Rock' && playerChoice == 'Scissors') || (computerChoice == 'Scissors' && playerChoice == 'Paper')){
+                    victoryMsg = 'You lose! ' + computerChoice + ' beat ' + playerChoice;
+                }
+
+                outputMsg.innerText = victoryMsg;
+                move1.innerText = playerChoice;
+                move2.innerText = computerChoice;
+            }
+
+            if(value == false){
+                msgErreur.innerText = 'You must make your choice between the 3 propositions above before playing.';
+            }
+        }
+    </script>
+</body>
+</html>
